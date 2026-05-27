@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Houston Heating & Cooling Air | HVAC Experts</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#0057B8;--blue-dark:#003d82;--blue-light:#1a78d4;
+  --orange:#FF6B00;--orange-light:#ff8c35;
+  --white:#ffffff;--off-white:#f4f7fc;--gray:#64748b;
+  --dark:#0a0f1e;--text:#1e293b;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;color:var(--text);overflow-x:hidden;background:#fff}
+
+/* ========== LOADER ========== */
+#loader{
+  position:fixed;inset:0;background:var(--dark);z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity 1s ease,visibility 1s ease;
+}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader-scene{position:relative;width:160px;height:160px;margin-bottom:36px}
+.l-ring{position:absolute;inset:0;border-radius:50%;border:3px solid transparent;border-top-color:var(--orange);animation:lspin 1.2s linear infinite}
+.l-ring:nth-child(2){inset:16px;border-top-color:var(--blue-light);animation-duration:.85s;animation-direction:reverse}
+.l-ring:nth-child(3){inset:32px;border-top-color:rgba(255,255,255,.2);animation-duration:1.6s}
+.l-core{position:absolute;inset:48px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:lpulse 1.4s ease-in-out infinite}
+.l-core i{color:#fff;font-size:22px}
+.l-particles span{
+  position:absolute;width:6px;height:6px;border-radius:50%;background:var(--orange);
+  animation:lpart 2s ease-in-out infinite;
+}
+.l-particles span:nth-child(1){top:10px;left:50%;animation-delay:0s}
+.l-particles span:nth-child(2){top:50%;right:10px;animation-delay:.3s;background:var(--blue-light)}
+.l-particles span:nth-child(3){bottom:10px;left:50%;animation-delay:.6s}
+.l-particles span:nth-child(4){top:50%;left:10px;animation-delay:.9s;background:var(--blue-light)}
+@keyframes lspin{to{transform:rotate(360deg)}}
+@keyframes lpulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,107,0,.5)}50%{transform:scale(1.1);box-shadow:0 0 0 12px rgba(255,107,0,0)}}
+@keyframes lpart{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+.l-title{font-family:'Bebas Neue',sans-serif;font-size:46px;letter-spacing:4px;color:#fff;text-align:center;line-height:1;animation:fadeUp .8s ease .3s both}
+.l-title span{color:var(--orange)}
+.l-sub{font-size:11px;letter-spacing:6px;color:#ffffff55;text-transform:uppercase;margin-top:8px;animation:fadeUp .8s ease .5s both}
+.l-bar-wrap{width:240px;height:3px;background:#ffffff10;border-radius:2px;margin-top:28px;overflow:hidden;animation:fadeUp .8s ease .7s both}
+.l-bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--orange));animation:lbar 2.5s ease forwards .9s}
+@keyframes lbar{to{width:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ========== NAV ========== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  background:rgba(5,10,30,.97);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:70px;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:38px;height:38px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.nav-logo-icon i{color:#fff;font-size:18px}
+.nav-logo-text{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:1px}
+.nav-logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{color:#ffffffaa;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--orange);color:#fff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:all .2s;animation:navPulse 2.5s ease-in-out infinite}
+.nav-cta:hover{background:var(--orange-light)}
+@keyframes navPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,.5)}50%{box-shadow:0 0 0 8px rgba(255,107,0,0)}}
+
+/* ========== SCROLL ANIMATIONS ========== */
+.slide-left{opacity:0;transform:translateX(-70px);transition:opacity .8s ease,transform .8s ease}
+.slide-right{opacity:0;transform:translateX(70px);transition:opacity .8s ease,transform .8s ease}
+.slide-up{opacity:0;transform:translateY(50px);transition:opacity .7s ease,transform .7s ease}
+.slide-left.visible,.slide-right.visible,.slide-up.visible{opacity:1;transform:translate(0)}
+.delay-1{transition-delay:.1s}
+.delay-2{transition-delay:.2s}
+.delay-3{transition-delay:.3s}
+.delay-4{transition-delay:.4s}
+.delay-5{transition-delay:.5s}
+
+/* ========== HERO ========== */
+#hero{
+  min-height:100vh;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#060c20 0%,#001845 60%,#060c20 100%);
+  display:flex;align-items:center;
+}
+.hero-bg-grid{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 50px,#fff 50px,#fff 51px),repeating-linear-gradient(90deg,transparent,transparent 50px,#fff 50px,#fff 51px)}
+.hero-blob-o{position:absolute;top:-80px;right:-80px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,0,.18) 0%,transparent 70%);animation:blob 7s ease-in-out infinite}
+.hero-blob-b{position:absolute;bottom:-120px;left:-80px;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(0,87,184,.22) 0%,transparent 70%);animation:blob 9s ease-in-out infinite reverse}
+@keyframes blob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-28px) scale(1.04)}}
+.hero-inner{position:relative;z-index:2;padding:120px 5% 80px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;max-width:1300px;margin:0 auto;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.35);color:var(--orange);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(54px,7vw,92px);line-height:.93;color:#fff;letter-spacing:2px;margin-bottom:22px}
+.hero-title .o{color:var(--orange)}
+.hero-title .b{color:#5ba4f5}
+.hero-desc{font-size:17px;font-weight:500;color:#ffffffbb;line-height:1.75;max-width:480px;margin-bottom:34px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px}
+.btn-p{background:var(--orange);color:#fff;padding:16px 32px;border-radius:8px;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all .25s;position:relative;overflow:hidden;animation:bpulse 2.5s ease-in-out infinite}
+.btn-p::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:translateX(-100%);transition:transform .5s}
+.btn-p:hover::before{transform:translateX(100%)}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(255,107,0,.4)}
+@keyframes bpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,.4)}50%{box-shadow:0 0 0 10px rgba(255,107,0,0)}}
+.btn-s{background:transparent;color:#fff;padding:16px 32px;border-radius:8px;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:10px;border:2px solid rgba(255,255,255,.3);transition:all .25s}
+.btn-s:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.hero-stats{display:flex;gap:32px}
+.hstat{border-left:3px solid var(--orange);padding-left:14px}
+.hstat-n{font-family:'Bebas Neue',sans-serif;font-size:38px;color:#fff;line-height:1}
+.hstat-l{font-size:11px;font-weight:700;color:#ffffff66;letter-spacing:1px;text-transform:uppercase}
+
+/* Hero right side — photo collage */
+.hero-photos{position:relative;height:500px}
+.hero-photo-main{position:absolute;top:0;right:0;width:75%;height:380px;border-radius:16px;overflow:hidden;border:2px solid rgba(255,255,255,.1);box-shadow:0 40px 80px rgba(0,0,0,.5)}
+.hero-photo-main img{width:100%;height:100%;object-fit:cover}
+.hero-photo-sm{position:absolute;bottom:0;left:0;width:48%;height:200px;border-radius:14px;overflow:hidden;border:2px solid rgba(255,255,255,.15);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.hero-photo-sm img{width:100%;height:100%;object-fit:cover}
+.hero-badge-float{position:absolute;bottom:40px;right:0;background:var(--orange);color:#fff;padding:14px 20px;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;box-shadow:0 10px 30px rgba(255,107,0,.4);display:flex;align-items:center;gap:10px}
+.hero-card-float{position:absolute;top:20px;left:0;background:rgba(255,255,255,.1);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px}
+.hero-card-float i{color:var(--orange);font-size:22px}
+.hcf-text strong{display:block;font-size:15px;font-weight:700;color:#fff}
+.hcf-text span{font-size:12px;color:#ffffff99}
+
+/* ========== SECTION UTILS ========== */
+section{padding:90px 5%}
+.sec-label{display:inline-flex;align-items:center;gap:8px;color:var(--orange);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
+.sec-label::before{content:'';display:block;width:22px;height:2px;background:var(--orange)}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,58px);letter-spacing:2px;color:var(--text);line-height:1;margin-bottom:14px}
+.sec-title span{color:var(--blue)}
+.sec-sub{font-size:16px;font-weight:500;color:var(--gray);max-width:560px;line-height:1.75}
+.sec-head{margin-bottom:52px}
+.sec-head.center{text-align:center}
+.sec-head.center .sec-label{justify-content:center}
+.sec-head.center .sec-sub{margin:0 auto}
+.sec-divider{height:5px;background:linear-gradient(90deg,var(--blue),var(--orange),var(--blue))}
+
+/* ========== PHOTO GALLERY ========== */
+#gallery{background:var(--off-white)}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:16px}
+.gal-item{border-radius:14px;overflow:hidden;position:relative;cursor:pointer}
+.gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.gal-item:hover img{transform:scale(1.05)}
+.gal-item:nth-child(1){grid-column:1/3;height:280px}
+.gal-item:nth-child(2){grid-column:3/4;height:280px}
+.gal-item:nth-child(3){height:220px}
+.gal-item:nth-child(4){height:220px}
+.gal-item:nth-child(5){height:220px}
+.gal-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 50%);opacity:0;transition:opacity .3s}
+.gal-item:hover .gal-overlay{opacity:1}
+.gal-label{position:absolute;bottom:0;left:0;right:0;padding:16px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;letter-spacing:.5px;transform:translateY(10px);transition:transform .3s;opacity:0}
+.gal-item:hover .gal-label{transform:translateY(0);opacity:1}
+
+/* ========== SERVICES ========== */
+#services{background:#fff}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.svc-card{background:#fff;border-radius:16px;padding:34px 26px;border:1.5px solid #e2e8f0;transition:all .3s;position:relative;overflow:hidden;cursor:default}
+.svc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--orange));transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.svc-card:hover{transform:translateY(-7px);box-shadow:0 22px 54px rgba(0,87,184,.1)}
+.svc-card:hover::after{transform:scaleX(1)}
+.svc-photo{width:100%;height:160px;border-radius:10px;overflow:hidden;margin-bottom:20px}
+.svc-photo img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.svc-card:hover .svc-photo img{transform:scale(1.06)}
+.svc-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--blue),var(--blue-light));border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.svc-icon i{color:#fff;font-size:22px}
+.svc-card h3{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:9px;letter-spacing:.5px}
+.svc-card p{font-size:13.5px;color:var(--gray);line-height:1.75}
+.svc-tag{display:inline-block;margin-top:14px;background:rgba(0,87,184,.08);color:var(--blue);padding:4px 12px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.5px}
+
+/* ========== BEFORE / AFTER ========== */
+#beforeafter{background:var(--off-white)}
+.ba-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.ba-info h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,4vw,52px);letter-spacing:2px;color:var(--text);margin-bottom:14px}
+.ba-info h2 span{color:var(--orange)}
+.ba-info p{font-size:15px;color:var(--gray);line-height:1.8;margin-bottom:24px}
+.ba-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:28px}
+.ba-list li{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;color:var(--text)}
+.ba-list li i{color:var(--orange);font-size:15px;width:18px}
+
+/* Real image slider */
+.ba-slider{
+  position:relative;border-radius:18px;overflow:hidden;
+  box-shadow:0 24px 70px rgba(0,0,0,.18);
+  aspect-ratio:4/3;user-select:none;cursor:ew-resize;
+  border:2px solid #e2e8f0;
+}
+.ba-img-before,.ba-img-after{position:absolute;inset:0}
+.ba-img-before img,.ba-img-after img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ba-img-after{width:50%;overflow:hidden;border-right:3px solid #fff}
+.ba-img-after img{width:200%;max-width:none}
+.ba-handle-line{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;transform:translateX(-50%);z-index:10}
+.ba-handle-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(0,0,0,.25);z-index:11}
+.ba-handle-btn i{color:var(--blue);font-size:16px}
+.ba-pill{position:absolute;top:16px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;padding:5px 14px;border-radius:6px;z-index:12;pointer-events:none}
+.ba-pill.b{left:16px;background:rgba(0,0,0,.55);color:#fff}
+.ba-pill.a{right:16px;background:var(--blue);color:#fff}
+
+/* ========== WHY US ========== */
+#whyus{background:linear-gradient(135deg,#07101f,#001845)}
+#whyus .sec-title{color:#fff}
+#whyus .sec-sub{color:#ffffff99}
+#whyus .sec-label{color:var(--orange)}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+.why-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:30px 22px;text-align:center;transition:all .3s}
+.why-card:hover{background:rgba(255,255,255,.09);transform:translateY(-5px)}
+.why-icon{width:62px;height:62px;border-radius:16px;background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.why-icon i{color:var(--orange);font-size:25px}
+.why-card h4{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:9px}
+.why-card p{font-size:13px;color:#ffffff88;line-height:1.75}
+
+/* ========== TEAM ========== */
+#team{background:#fff}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px}
+.team-card{border-radius:16px;overflow:hidden;border:1.5px solid #e2e8f0;transition:all .3s}
+.team-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,87,184,.1)}
+.team-photo{height:240px;overflow:hidden}
+.team-photo img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.team-card:hover .team-photo img{transform:scale(1.06)}
+.team-info{padding:22px}
+.team-info h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px}
+.team-info span{font-size:13px;color:var(--orange);font-weight:600;letter-spacing:.5px}
+.team-info p{font-size:13px;color:var(--gray);margin-top:8px;line-height:1.65}
+
+/* ========== REVIEWS ========== */
+#reviews{background:var(--off-white)}
+.review-banner{background:linear-gradient(135deg,var(--blue),var(--blue-dark));border-radius:20px;padding:36px 40px;margin-bottom:44px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
+.rb-score{text-align:center}
+.rb-num{font-family:'Bebas Neue',sans-serif;font-size:68px;color:#fff;line-height:1}
+.rb-stars{color:#FFB800;font-size:18px;margin:4px 0}
+.rb-label{color:#ffffff88;font-size:13px;font-weight:600}
+.rb-divider{width:1px;height:70px;background:rgba(255,255,255,.2)}
+.rb-tags{display:flex;flex-wrap:wrap;gap:10px;max-width:500px}
+.rb-tag{background:rgba(255,255,255,.12);color:#fff;padding:7px 15px;border-radius:100px;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,.2)}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+.rev-card{background:#fff;border-radius:16px;padding:30px;border:1.5px solid #e2e8f0;transition:all .3s;position:relative}
+.rev-card::before{content:'\201C';position:absolute;top:12px;right:22px;font-size:80px;color:var(--blue);opacity:.07;font-family:Georgia,serif;line-height:1}
+.rev-card:hover{box-shadow:0 16px 42px rgba(0,87,184,.09);transform:translateY(-5px)}
+.rev-stars{color:#FFB800;font-size:14px;margin-bottom:12px;letter-spacing:2px}
+.rev-text{font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:18px;font-style:italic}
+.reviewer{display:flex;align-items:center;gap:12px}
+.rev-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--orange));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:17px;color:#fff;flex-shrink:0}
+.rev-name{font-weight:700;font-size:14px;color:var(--text)}
+.rev-date{font-size:12px;color:var(--gray)}
+.rev-badge{display:inline-flex;align-items:center;gap:5px;margin-top:6px;background:rgba(0,87,184,.08);color:var(--blue);padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700}
+
+/* ========== CONTACT ========== */
+#contact{background:#fff}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.contact-items{display:flex;flex-direction:column}
+.ci{display:flex;align-items:flex-start;gap:16px;padding:22px 0;border-bottom:1px solid #f1f5f9}
+.ci:last-child{border-bottom:none}
+.ci-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.c-or{background:rgba(255,107,0,.1);color:var(--orange)}
+.c-bl{background:rgba(0,87,184,.1);color:var(--blue)}
+.c-gr{background:rgba(34,197,94,.1);color:#16a34a}
+.ci-text strong{display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.ci-text a,.ci-text span{font-size:15px;color:var(--gray);text-decoration:none;line-height:1.6}
+.ci-text a:hover{color:var(--blue)}
+.social-row{display:flex;gap:10px;margin-top:28px}
+.soc{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;transition:all .25s}
+.s-wa{background:#25D366;color:#fff}
+.s-fb{background:#1877F2;color:#fff}
+.s-ig{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff}
+.s-yt{background:#FF0000;color:#fff}
+.s-em{background:var(--blue);color:#fff}
+.soc:hover{transform:translateY(-3px) scale(1.1);box-shadow:0 8px 22px rgba(0,0,0,.15)}
+.contact-form{background:var(--off-white);border-radius:20px;padding:38px;border:1.5px solid #e2e8f0}
+.form-title{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;color:var(--text);margin-bottom:22px}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:7px}
+.fg input,.fg select,.fg textarea{width:100%;padding:13px 15px;border:2px solid #e2e8f0;border-radius:10px;font-family:'Barlow',sans-serif;font-size:14px;color:var(--text);background:#fff;transition:border-color .2s;outline:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue)}
+.fg textarea{height:105px;resize:none}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-btn{width:100%;background:var(--orange);color:#fff;border:none;cursor:pointer;padding:15px;border-radius:10px;font-family:'Barlow',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .25s;animation:bpulse 2.5s ease-in-out infinite}
+.form-btn:hover{background:var(--orange-light);transform:translateY(-2px)}
+
+/* ========== FLOATING ========== */
+.float-book{position:fixed;bottom:28px;right:28px;z-index:400;background:var(--orange);color:#fff;padding:13px 22px;border-radius:100px;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;box-shadow:0 8px 28px rgba(255,107,0,.4);animation:fbounce 2s ease-in-out infinite}
+.float-book:hover{background:var(--orange-light);animation:none;transform:scale(1.05)}
+@keyframes fbounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.float-wa{position:fixed;bottom:28px;left:28px;z-index:400;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;text-decoration:none;box-shadow:0 8px 28px rgba(37,211,102,.4);animation:fbounce 2.5s ease-in-out infinite .5s}
+.float-wa:hover{background:#20bb5a;animation:none;transform:scale(1.1)}
+
+/* ========== FOOTER ========== */
+footer{background:var(--dark);color:#ffffff77;padding:40px 5%;text-align:center;border-top:1px solid rgba(255,255,255,.06)}
+.foot-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;letter-spacing:2px;margin-bottom:6px}
+.foot-logo span{color:var(--orange)}
+.foot-div{width:56px;height:2px;background:var(--orange);margin:14px auto}
+footer p{font-size:13px;line-height:1.8}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:900px){
+  .hero-inner,.ba-wrap,.contact-grid{grid-template-columns:1fr}
+  .hero-photos{display:none}
+  .nav-links{display:none}
+  .fg-row{grid-template-columns:1fr}
+  .review-banner{flex-direction:column;text-align:center}
+  .rb-divider{display:none}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .gal-item:nth-child(1){grid-column:1/3;height:200px}
+  .gal-item:nth-child(2){grid-column:1/3;height:200px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-scene">
+    <div class="l-particles">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="l-ring"></div>
+    <div class="l-ring"></div>
+    <div class="l-ring"></div>
+    <div class="l-core"><i class="fas fa-wind"></i></div>
+  </div>
+  <div class="l-title">Houston Heating<br>&amp; <span>Cooling Air</span></div>
+  <div class="l-sub">Your Comfort. Our Priority.</div>
+  <div class="l-bar-wrap"><div class="l-bar"></div></div>
+</div>
+
+<!-- FLOATING -->
+<a href="https://wa.me/17135550000" class="float-wa" target="_blank" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<a href="#contact" class="float-book"><i class="fas fa-calendar-check"></i> Book Online</a>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon"><i class="fas fa-snowflake"></i></div>
+    <div class="nav-logo-text">HH&amp;C <span>Air</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="#gallery">Gallery</a>
+    <a href="#services">Services</a>
+    <a href="#beforeafter">Our Work</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="nav-cta"><i class="fas fa-phone"></i>&nbsp; Call Now</a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-blob-o"></div>
+  <div class="hero-blob-b"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge"><i class="fas fa-star"></i>&nbsp; #1 Rated HVAC in Houston</div>
+      <h1 class="hero-title">
+        Stay Cool.<br>
+        <span class="o">Stay Warm.</span><br>
+        <span class="b">Stay Comfortable.</span>
+      </h1>
+      <p class="hero-desc">Houston's most trusted heating & cooling experts. Fast response, honest pricing, and installations that last. Licensed, insured, and ready 24/7.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-p"><i class="fas fa-calendar-check"></i> Book Online</a>
+        <a href="tel:+17135550000" class="btn-s"><i class="fas fa-phone"></i> (713) 555-0000</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-n">12+</div><div class="hstat-l">Years Experience</div></div>
+        <div class="hstat"><div class="hstat-n">500+</div><div class="hstat-l">Jobs Completed</div></div>
+        <div class="hstat"><div class="hstat-n">4.9★</div><div class="hstat-l">Google Rating</div></div>
+      </div>
+    </div>
+    <div class="hero-photos">
+      <div class="hero-photo-main">
+        <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=900&q=80" alt="HVAC Technician">
+      </div>
+      <div class="hero-photo-sm">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="AC Unit">
+      </div>
+      <div class="hero-badge-float"><i class="fas fa-bolt"></i> 24/7 Emergency</div>
+      <div class="hero-card-float">
+        <i class="fas fa-shield-alt"></i>
+        <div class="hcf-text"><strong>Licensed & Insured</strong><span>Full coverage guaranteed</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== GALLERY ===== -->
+<section id="gallery">
+  <div class="sec-head center slide-up">
+    <div class="sec-label">Our Work In Photos</div>
+    <h2 class="sec-title">See What We <span>Install & Fix</span></h2>
+    <p class="sec-sub">Real jobs from real Houston homes and businesses. Quality you can see.</p>
+  </div>
+  <div class="gallery-grid">
+    <div class="gal-item slide-left">
+      <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80" alt="HVAC Installation">
+      <div class="gal-overlay"></div>
+      <div class="gal-label">Full System Installation</div>
+    </div>
+    <div class="gal-item slide-right">
+      <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=500&q=80" alt="AC Unit">
+      <div class="gal-overlay"></div>
+      <div class="gal-label">AC Unit Replacement</div>
+    </div>
+    <div class="gal-item slide-left delay-1">
+      <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=500&q=80" alt="Technician at work">
+      <div class="gal-overlay"></div>
+      <div class="gal-label">Expert Technicians</div>
+    </div>
+    <div class="gal-item slide-up delay-2">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="HVAC System">
+      <div class="gal-overlay"></div>
+      <div class="gal-label">Thermostat Upgrade</div>
+    </div>
+    <div class="gal-item slide-right delay-1">
+      <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=500&q=80" alt="Duct work">
+      <div class="gal-overlay"></div>
+      <div class="gal-label">Duct Cleaning & Repair</div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== SERVICES ===== -->
+<section id="services" style="background:var(--off-white)">
+  <div class="sec-head center slide-up">
+    <div class="sec-label">What We Do</div>
+    <h2 class="sec-title">Our <span>Services</span></h2>
+    <p class="sec-sub">Complete HVAC solutions — installation, repair, and maintenance. We handle it all.</p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card slide-left delay-1">
+      <div class="svc-photo"><img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80" alt="AC Install"></div>
+      <div class="svc-icon"><i class="fas fa-snowflake"></i></div>
+      <h3>AC Installation</h3>
+      <p>Brand new systems tailored to your space. We recommend the right unit and handle everything start to finish.</p>
+      <span class="svc-tag">Most Popular</span>
+    </div>
+    <div class="svc-card slide-up delay-2">
+      <div class="svc-photo"><img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=600&q=80" alt="Heating Repair"></div>
+      <div class="svc-icon" style="background:linear-gradient(135deg,#c84b00,#ff8f00)"><i class="fas fa-fire"></i></div>
+      <h3>Heating Repair</h3>
+      <p>Furnace not working? We diagnose and fix heating issues fast — same day service available across Houston.</p>
+      <span class="svc-tag" style="background:rgba(255,107,0,.08);color:var(--orange)">Same Day</span>
+    </div>
+    <div class="svc-card slide-right delay-1">
+      <div class="svc-photo"><img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="AC Repair"></div>
+      <div class="svc-icon"><i class="fas fa-tools"></i></div>
+      <h3>AC Repair</h3>
+      <p>From refrigerant leaks to compressor failures, we fix all makes and models. Honest diagnosis, no upselling.</p>
+    </div>
+    <div class="svc-card slide-left delay-2">
+      <div class="svc-photo"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Thermostat"></div>
+      <div class="svc-icon" style="background:linear-gradient(135deg,#1b5e20,#388e3c)"><i class="fas fa-leaf"></i></div>
+      <h3>Thermostat Upgrade</h3>
+      <p>Smart thermostat installation for better comfort and lower energy bills. Compatible with Nest, Ecobee & more.</p>
+      <span class="svc-tag" style="background:rgba(34,197,94,.08);color:#16a34a">Save Energy</span>
+    </div>
+    <div class="svc-card slide-up delay-3">
+      <div class="svc-photo"><img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80" alt="Air Quality"></div>
+      <div class="svc-icon" style="background:linear-gradient(135deg,#4a148c,#7b1fa2)"><i class="fas fa-wind"></i></div>
+      <h3>Air Quality</h3>
+      <p>Duct cleaning, air purifiers, and humidity control. Breathe cleaner, healthier air in your home every day.</p>
+    </div>
+    <div class="svc-card slide-right delay-2">
+      <div class="svc-photo"><img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80" alt="Maintenance"></div>
+      <div class="svc-icon" style="background:linear-gradient(135deg,#006064,#0097a7)"><i class="fas fa-clipboard-check"></i></div>
+      <h3>Maintenance Plans</h3>
+      <p>Seasonal tune-ups to keep your system running efficiently. Avoid expensive breakdowns before they happen.</p>
+      <span class="svc-tag">Best Value</span>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== BEFORE / AFTER ===== -->
+<section id="beforeafter" style="background:#fff">
+  <div class="ba-wrap">
+    <div class="ba-info slide-left">
+      <div class="sec-label">Real Transformations</div>
+      <h2>Before <span>&amp; After</span></h2>
+      <p>Drag the slider to see the real difference we make. From old rusted systems to modern efficient units — we transform your comfort completely.</p>
+      <ul class="ba-list">
+        <li><i class="fas fa-check-circle"></i> Full system replacement in one day</li>
+        <li><i class="fas fa-check-circle"></i> Up to 40% reduction in energy bills</li>
+        <li><i class="fas fa-check-circle"></i> 10-year manufacturer warranty included</li>
+        <li><i class="fas fa-check-circle"></i> Clean, professional finish every time</li>
+        <li><i class="fas fa-check-circle"></i> Free post-install inspection at 30 days</li>
+      </ul>
+      <a href="#contact" class="btn-p" style="display:inline-flex"><i class="fas fa-calendar-check"></i> Get a Free Quote</a>
+    </div>
+    <div class="ba-slider slide-right" id="baSlider">
+      <!-- BEFORE image (old rusty AC) -->
+      <div class="ba-img-before">
+        <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80" alt="Old HVAC system before">
+      </div>
+      <!-- AFTER image (new modern AC) -->
+      <div class="ba-img-after" id="baAfter">
+        <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80" alt="New HVAC system after">
+      </div>
+      <div class="ba-pill b">BEFORE</div>
+      <div class="ba-pill a">AFTER</div>
+      <div class="ba-handle-line" id="baHandleLine">
+        <div class="ba-handle-btn"><i class="fas fa-arrows-left-right"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== WHY US ===== -->
+<section id="whyus">
+  <div class="sec-head center slide-up">
+    <div class="sec-label">Why Choose Us</div>
+    <h2 class="sec-title" style="color:#fff">The <span style="color:var(--orange)">HH&C</span> Difference</h2>
+    <p class="sec-sub">We don't just fix your HVAC — we earn your trust every single time.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card slide-left delay-1">
+      <div class="why-icon"><i class="fas fa-bolt"></i></div>
+      <h4>Fast Response</h4>
+      <p>We show up on time, every time. Same-day and emergency service available 24/7 across Houston.</p>
+    </div>
+    <div class="why-card slide-up delay-2">
+      <div class="why-icon"><i class="fas fa-dollar-sign"></i></div>
+      <h4>Honest Pricing</h4>
+      <p>Upfront quotes. No hidden fees. No surprises. We tell you the cost before we start any work.</p>
+    </div>
+    <div class="why-card slide-up delay-3">
+      <div class="why-icon"><i class="fas fa-user-check"></i></div>
+      <h4>Certified Techs</h4>
+      <p>All our technicians are NATE-certified and background checked. Your home is in safe hands.</p>
+    </div>
+    <div class="why-card slide-right delay-1">
+      <div class="why-icon"><i class="fas fa-shield-alt"></i></div>
+      <h4>Guaranteed Work</h4>
+      <p>Every repair and installation comes with our 1-year labor warranty. We stand behind our work.</p>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== TEAM ===== -->
+<section id="team" style="background:#fff">
+  <div class="sec-head center slide-up">
+    <div class="sec-label">Meet The Team</div>
+    <h2 class="sec-title">The People Behind <span>Your Comfort</span></h2>
+    <p class="sec-sub">Experienced, certified, and passionate about HVAC. These are the hands doing the work.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card slide-left delay-1">
+      <div class="team-photo"><img src="https://images.unsplash.com/photo-1537511446984-935f663eb1f4?w=500&q=80" alt="Lead Technician"></div>
+      <div class="team-info">
+        <h3>Carlos Martinez</h3>
+        <span>Lead HVAC Technician</span>
+        <p>12 years experience. NATE certified. Specializes in full system replacements and commercial installs.</p>
+      </div>
+    </div>
+    <div class="team-card slide-up delay-2">
+      <div class="team-photo"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&q=80" alt="Owner"></div>
+      <div class="team-info">
+        <h3>James Okafor</h3>
+        <span>Owner & Master Tech</span>
+        <p>Founded HH&C Air with a simple mission — honest work, fair prices, and customers for life.</p>
+      </div>
+    </div>
+    <div class="team-card slide-right delay-1">
+      <div class="team-photo"><img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=500&q=80" alt="Service Tech"></div>
+      <div class="team-info">
+        <h3>Marcus Webb</h3>
+        <span>Service Technician</span>
+        <p>Repair specialist with a sharp eye for diagnosing complex HVAC issues quickly and accurately.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== REVIEWS ===== -->
+<section id="reviews" style="background:var(--off-white)">
+  <div class="sec-head center slide-up">
+    <div class="sec-label">Customer Reviews</div>
+    <h2 class="sec-title">What Houston <span>Says About Us</span></h2>
+    <p class="sec-sub">Real reviews from real customers on Google. We let our work speak for itself.</p>
+  </div>
+  <div class="review-banner slide-up">
+    <div class="rb-score">
+      <div class="rb-num">4.9</div>
+      <div class="rb-stars">★★★★★</div>
+      <div class="rb-label">80+ Google Reviews</div>
+    </div>
+    <div class="rb-divider"></div>
+    <div class="rb-tags">
+      <span class="rb-tag">✓ Polite Technicians</span>
+      <span class="rb-tag">✓ Prompt Work</span>
+      <span class="rb-tag">✓ On Time</span>
+      <span class="rb-tag">✓ Dependable</span>
+      <span class="rb-tag">✓ Efficient</span>
+      <span class="rb-tag">✓ Thermostat Install</span>
+      <span class="rb-tag">✓ Courteous Staff</span>
+      <span class="rb-tag">✓ Appliance Repairs</span>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="rev-card slide-left delay-1">
+      <div class="rev-stars">★★★★★</div>
+      <p class="rev-text">"After upgrading our thermostat, the temperature control in our home is now seamless and efficient. The technician arrived about 15 minutes earlier than expected, which was a pleasant surprise. He explained the setup process clearly."</p>
+      <div class="reviewer">
+        <div class="rev-av">JG</div>
+        <div>
+          <div class="rev-name">Jimena Gianni</div>
+          <div class="rev-date">2 months ago</div>
+          <div class="rev-badge"><i class="fab fa-google" style="font-size:10px"></i> Google Review</div>
+        </div>
+      </div>
+    </div>
+    <div class="rev-card slide-up delay-2">
+      <div class="rev-stars">★★★★★</div>
+      <p class="rev-text">"Called on a Sunday when my AC went completely out. They came within 2 hours, found the problem fast, and had it fixed before dinner. Price was very fair. These guys are the real deal — highly recommend!"</p>
+      <div class="reviewer">
+        <div class="rev-av" style="background:linear-gradient(135deg,#c84b00,#ff8f00)">MR</div>
+        <div>
+          <div class="rev-name">Marcus Rodriguez</div>
+          <div class="rev-date">3 months ago</div>
+          <div class="rev-badge"><i class="fab fa-google" style="font-size:10px"></i> Google Review</div>
+        </div>
+      </div>
+    </div>
+    <div class="rev-card slide-right delay-1">
+      <div class="rev-stars">★★★★★</div>
+      <p class="rev-text">"Very professional team. They installed a whole new unit, cleaned up after themselves, and walked us through everything. Already seeing lower electricity bills after just one month. 10/10 would use again."</p>
+      <div class="reviewer">
+        <div class="rev-av" style="background:linear-gradient(135deg,#1b5e20,#388e3c)">TW</div>
+        <div>
+          <div class="rev-name">Tanya Williams</div>
+          <div class="rev-date">1 month ago</div>
+          <div class="rev-badge"><i class="fab fa-google" style="font-size:10px"></i> Google Review</div>
+        </div>
+      </div>
+    </div>
+    <div class="rev-card slide-left delay-3">
+      <div class="rev-stars">★★★★★</div>
+      <p class="rev-text">"James came out same day when our heater stopped working in the middle of winter. Super knowledgeable, explained everything clearly, and didn't try to oversell me anything. Will definitely call them again."</p>
+      <div class="reviewer">
+        <div class="rev-av" style="background:linear-gradient(135deg,#0057b8,#1a78d4)">DB</div>
+        <div>
+          <div class="rev-name">David Brooks</div>
+          <div class="rev-date">5 months ago</div>
+          <div class="rev-badge"><i class="fab fa-google" style="font-size:10px"></i> Google Review</div>
+        </div>
+      </div>
+    </div>
+    <div class="rev-card slide-up delay-4">
+      <div class="rev-stars">★★★★★</div>
+      <p class="rev-text">"Installed a smart thermostat for me and even helped me set it up on my phone. So easy to use now. My electric bill dropped $80 in the first month. These guys know what they're doing!"</p>
+      <div class="reviewer">
+        <div class="rev-av" style="background:linear-gradient(135deg,#880e4f,#c2185b)">SP</div>
+        <div>
+          <div class="rev-name">Sandra Perez</div>
+          <div class="rev-date">2 months ago</div>
+          <div class="rev-badge"><i class="fab fa-google" style="font-size:10px"></i> Google Review</div>
+        </div>
+      </div>
+    </div>
+    <div class="rev-card slide-right delay-3">
+      <div class="rev-stars">★★★★★</div>
+      <p class="rev-text">"Best HVAC company in Houston hands down. Fair prices, quick turnaround, and the work quality is excellent. My unit has been running perfectly for 6 months since they serviced it. Loyal customer for life."</p>
+      <div class="reviewer">
+        <div class="rev-av" style="background:linear-gradient(135deg,#004d40,#00796b)">KJ</div>
+        <div>
+          <div class="rev-name">Kevin Johnson</div>
+          <div class="rev-date">4 months ago</div>
+          <div class="rev-badge"><i class="fab fa-google" style="font-size:10px"></i> Google Review</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" style="background:#fff">
+  <div class="sec-head slide-left">
+    <div class="sec-label">Get In Touch</div>
+    <h2 class="sec-title">Book Your <span>Service Today</span></h2>
+    <p class="sec-sub">Ready to get comfortable? Reach out through any channel below. We respond fast.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-items slide-left">
+      <div class="ci">
+        <div class="ci-icon c-or"><i class="fas fa-phone"></i></div>
+        <div class="ci-text"><strong>Call or Text</strong><a href="tel:+17135550000">(713) 555-0000</a></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon c-bl"><i class="fas fa-envelope"></i></div>
+        <div class="ci-text"><strong>Email</strong><a href="mailto:info@houstonhvacair.com">info@houstonhvacair.com</a></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon c-gr"><i class="fab fa-whatsapp"></i></div>
+        <div class="ci-text"><strong>WhatsApp</strong><a href="https://wa.me/17135550000" target="_blank">Message us on WhatsApp</a></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon c-or"><i class="fas fa-map-marker-alt"></i></div>
+        <div class="ci-text"><strong>Location</strong><span>1919 Collingsworth St, Houston, TX 77009</span></div>
+      </div>
+      <div class="ci">
+        <div class="ci-icon c-bl"><i class="fas fa-clock"></i></div>
+        <div class="ci-text"><strong>Hours</strong><span>Wednesday: 8AM – 6PM &nbsp;|&nbsp; Emergency: 24/7</span></div>
+      </div>
+      <div class="social-row">
+        <a href="https://wa.me/17135550000" class="soc s-wa" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="soc s-fb" title="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="soc s-ig" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="soc s-yt" title="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="mailto:info@houstonhvacair.com" class="soc s-em" title="Email"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+    <div class="contact-form slide-right">
+      <div class="form-title">Request a Free Quote</div>
+      <div class="fg-row">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="John"></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+      </div>
+      <div class="fg"><label>Phone Number</label><input type="tel" placeholder="(713) 000-0000"></div>
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="john@email.com"></div>
+      <div class="fg"><label>Service Needed</label>
+        <select>
+          <option>AC Installation</option>
+          <option>AC Repair</option>
+          <option>Heating Repair</option>
+          <option>Thermostat Upgrade</option>
+          <option>Maintenance Plan</option>
+          <option>Air Quality Service</option>
+          <option>Emergency Service</option>
+        </select>
+      </div>
+      <div class="fg"><label>Message</label><textarea placeholder="Describe your issue or ask us anything..."></textarea></div>
+      <button class="form-btn" id="formBtn"><i class="fas fa-paper-plane"></i> Send Request</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">Houston Heating &amp; <span>Cooling Air</span></div>
+  <div class="foot-div"></div>
+  <p>1919 Collingsworth St, Houston, TX 77009 &nbsp;|&nbsp; (713) 555-0000 &nbsp;|&nbsp; info@houstonhvacair.com</p>
+  <p style="margin-top:6px;font-size:12px">© 2025 Houston Heating & Cooling Air. All rights reserved. Licensed & Insured in Texas.</p>
+</footer>
+
+<script>
+// Loader
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('hide'), 3200);
+});
+
+// Scroll animations
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.12});
+document.querySelectorAll('.slide-left,.slide-right,.slide-up').forEach(el=>obs.observe(el));
+
+// Before/After slider
+const slider = document.getElementById('baSlider');
+const afterEl = document.getElementById('baAfter');
+const handleLine = document.getElementById('baHandleLine');
+let dragging = false;
+
+function setPos(clientX){
+  const r = slider.getBoundingClientRect();
+  let pct = ((clientX - r.left) / r.width) * 100;
+  pct = Math.min(Math.max(pct, 3), 97);
+  afterEl.style.width = pct + '%';
+  handleLine.style.left = pct + '%';
+  // Move after image to compensate
+  afterEl.querySelector('img').style.width = (100 / (pct/100)) + '%';
+}
+
+handleLine.addEventListener('mousedown', e=>{dragging=true;e.preventDefault()});
+window.addEventListener('mouseup', ()=>dragging=false);
+window.addEventListener('mousemove', e=>{if(dragging) setPos(e.clientX)});
+
+handleLine.addEventListener('touchstart', e=>{dragging=true},{passive:true});
+window.addEventListener('touchend', ()=>dragging=false);
+window.addEventListener('touchmove', e=>{if(dragging) setPos(e.touches[0].clientX)},{passive:true});
+
+slider.addEventListener('mousedown', e=>{dragging=true; setPos(e.clientX)});
+slider.addEventListener('touchstart', e=>{dragging=true; setPos(e.touches[0].clientX)},{passive:true});
+
+// Form submit
+document.getElementById('formBtn').addEventListener('click',function(){
+  this.innerHTML='<i class="fas fa-check"></i> Request Sent!';
+  this.style.background='#16a34a';
+  setTimeout(()=>{
+    this.innerHTML='<i class="fas fa-paper-plane"></i> Send Request';
+    this.style.background='';
+  },3000);
+});
+</script>
+</body>
+</html>
