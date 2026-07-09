@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   if (!token) return res.status(400).json({ success: false, message: 'No token provided' });
 
   const SECRET_KEY = '6Lfv4RAtAAAAAPxB8BGR6ilruJkqoBloprXFoONk';
-  const PROJECT_ID = 'premium-houston-ac';
+  const PROJECT_ID = 'gen-lang-client-0831826779';
 
   try {
     const response = await fetch(
