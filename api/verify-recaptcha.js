@@ -32,10 +32,13 @@ export default async function handler(req, res) {
     const score = data?.riskAnalysis?.score ?? 0;
     const valid = data?.tokenProperties?.valid === true;
 
-    if (valid && score >= 0.5) {
+    // Log for debugging
+    console.log('reCAPTCHA assessment:', JSON.stringify({ valid, score, reasons: data?.riskAnalysis?.reasons }));
+
+    if (valid && score >= 0.3) {
       return res.status(200).json({ success: true, score });
     } else {
-      return res.status(200).json({ success: false, message: 'reCAPTCHA verification failed', score });
+      return res.status(200).json({ success: false, message: 'reCAPTCHA verification failed', score, valid, data });
     }
   } catch (err) {
     return res.status(500).json({ success: false, message: 'Verification error' });
