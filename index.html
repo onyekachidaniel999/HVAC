@@ -566,7 +566,6 @@ footer p{font-size:12px;line-height:1.85}
 .sp-call-btn{background:rgba(255,255,255,.15);color:#fff;border:2px solid #fff;text-decoration:none;transition:all .25s}
 .sp-call-btn:hover{background:#fff;color:#e53935;transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.2)}
 </style>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -962,7 +961,7 @@ footer p{font-size:12px;line-height:1.85}
         </select>
       </div>
       <div class="fg"><label>Message</label><textarea name="message" placeholder="Describe your issue or ask us anything..."></textarea></div>
-      <div class="g-recaptcha" id="recaptcha-main" data-sitekey="6Lfv4RAtAAAAAF4Eetzfq7XaoKj5Ci-vWlqdCxpc" data-sitekey="6Lfv4RAtAAAAAF4Eetzfq7XaoKj5Ci-vWlqdCxpc" style="margin-bottom:14px;transform:scale(0.95);transform-origin:left"></div>
+      <div class="h-captcha" data-captcha="true"></div>
       <button class="form-btn" id="formBtn"><i class="fas fa-paper-plane"></i> Send Request</button>
     </div>
   </div>
@@ -1079,41 +1078,17 @@ function showNetworkError(containerEl) {
 
 async function sendForm(containerEl, btnEl, successMsg) {
   const params = getFormValues(containerEl);
-  // Check both widgets - main form is widget 0, contact page is widget 1
-  let recaptchaRes = '';
-  try { recaptchaRes = grecaptcha.getResponse(0); } catch(e) {}
-  if (!recaptchaRes) { try { recaptchaRes = grecaptcha.getResponse(1); } catch(e) {} }
-  if (!recaptchaRes) {
-    btnEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please complete the reCAPTCHA';
-    btnEl.style.background = '#b91c1c';
-    setTimeout(() => { btnEl.innerHTML = '<i class="fas fa-paper-plane"></i> Send Request'; btnEl.style.background = ''; }, 2500);
-    return;
-  }
+
   if (!params.email && !params.phone) {
     btnEl.innerHTML = '<i class="fas fa-exclamation"></i> Please fill in phone or email';
     btnEl.style.background = '#b91c1c';
     setTimeout(() => { btnEl.innerHTML = '<i class="fas fa-paper-plane"></i> Send Request'; btnEl.style.background = ''; }, 2500);
     return;
   }
-  btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+  btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
   btnEl.disabled = true;
   btnEl.style.background = 'var(--blue)';
   try {
-    // Step 1: Verify reCAPTCHA token via Vercel serverless function
-    const captchaCheck = await fetch('/api/verify-recaptcha', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: recaptchaRes })
-    });
-    const captchaResult = await captchaCheck.json();
-    if (!captchaResult.success) {
-      btnEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> reCAPTCHA failed. Try again.';
-      btnEl.style.background = '#b91c1c';
-      setTimeout(() => { btnEl.innerHTML = '<i class="fas fa-paper-plane"></i> Send Request'; btnEl.style.background = ''; btnEl.disabled = false; try{grecaptcha.reset(0);}catch(e){} try{grecaptcha.reset(1);}catch(e){} }, 3000);
-      return;
-    }
-    // Step 2: Submit form via Web3Forms
-    btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -1123,7 +1098,7 @@ async function sendForm(containerEl, btnEl, successMsg) {
     if (result.success) {
       btnEl.innerHTML = '<i class="fas fa-check"></i> ' + successMsg;
       btnEl.style.background = '#16a34a';
-      setTimeout(() => { btnEl.innerHTML = '<i class="fas fa-paper-plane"></i> Send Request'; btnEl.style.background = ''; btnEl.disabled = false; try{grecaptcha.reset(0);}catch(e){} try{grecaptcha.reset(1);}catch(e){} }, 4000);
+      setTimeout(() => { btnEl.innerHTML = '<i class="fas fa-paper-plane"></i> Send Request'; btnEl.style.background = ''; btnEl.disabled = false;  }, 4000);
     } else {
       throw new Error(result.message || 'Failed');
     }
@@ -1132,7 +1107,7 @@ async function sendForm(containerEl, btnEl, successMsg) {
     btnEl.innerHTML = '<i class="fas fa-paper-plane"></i> Send Request';
     btnEl.style.background = '';
     btnEl.disabled = false;
-    try{grecaptcha.reset(0);}catch(e){} try{grecaptcha.reset(1);}catch(e){}
+    
   }
 }
 
@@ -1812,7 +1787,7 @@ document.querySelectorAll('.svc-page').forEach(page => {
           </select>
         </div>
         <div class="fg"><label>Message</label><textarea style="height:95px;resize:none" name="message" placeholder="Describe your issue or ask us anything..."></textarea></div>
-        <div class="g-recaptcha" id="recaptcha-cp" data-sitekey="6Lfv4RAtAAAAAF4Eetzfq7XaoKj5Ci-vWlqdCxpc" data-sitekey="6Lfv4RAtAAAAAF4Eetzfq7XaoKj5Ci-vWlqdCxpc" style="margin-bottom:14px;transform:scale(0.95);transform-origin:left"></div>
+        <div class="h-captcha" data-captcha="true"></div>
       <button class="form-btn" id="cpFormBtn"><i class="fas fa-paper-plane"></i> Send Request</button>
       </div>
     </div>
@@ -1866,5 +1841,6 @@ function toggleFaq(item) {
 
 </script>
 
+<script src="https://web3forms.com/client/script.js" async defer></script>
 </body>
 </html>
